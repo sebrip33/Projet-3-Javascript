@@ -9,17 +9,20 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<script src="https://kit.fontawesome.com/05c2ed4270.js" crossorigin="anonymous"></script>
 	<script type="module" src="recup.js"></script>
 	<script type="module" src="login.js"></script>
 </head>
 <body>
+	<div class="overlay"></div>		<!--Superposition pour recouvrir la page à l'ouverture de la modale-->
+	<div id="black-banner"></div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li><a href="#portfolio">projets</a></li>
 			<li><a href="#contact">contact</a></li>
-			<li><a href="login.html">login</a></li>
+			<li id="login-btn"><a href="login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -28,6 +31,9 @@
 	<section id="introduction">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
+			<div class="modify">
+				<a href=""> <i class="fa-regular fa-pen-to-square square"></i>modifier</a>
+			</div>
 		</figure>
 		<article>
 			<h2>Designer d'espace</h2>
@@ -37,7 +43,26 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2> 
+		
+		<aside id="modal-window" class="modal-window" role="modal" aria-modal="true">		<!--fenêtre modale-->
+			<span class="close">&times;</span>
+			<div class="modal-contents">
+				<div class="modal-content1">
+					<h2>Galerie photo</h2>
+					<div id="works-gallery"></div>
+				</div>
+				<div class="modal-content2">
+					<button id="add-image">Ajouter une photo</button>
+					<button id="delete-galery">Supprimer la galerie</button>
+				</div>
+			</div>
+		</aside>
+		
+		<h2>Mes Projets
+			<span class="modify-btn">		<!-- Lien permettant d'ouvrir la modale-->
+			<a href="#modal-window"> <i class="fa-regular fa-pen-to-square square"></i>modifier</a> 
+			</span>
+		</h2>
 		<div class="filters">
 			<button class="btn-all">Tous</button>
 			<button class="btn-objects">Objets</button>
