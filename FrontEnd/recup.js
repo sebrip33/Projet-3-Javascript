@@ -30,10 +30,11 @@ function generateWorks (works) {        // Je crée la fonction "generateWorks" 
 
     for (let i = 0; i < works.length; i++) {        // Boucle qui parcourt le tableau "works"
         const article = works[i];
-        const category = categories.find((cat) => cat.id === article.categoryId);
+        const category = categories.find((cat) => cat.id === article.categoryId);       // Je récupère la catégorie associée à article(works)
             
         const workElement = document.createElement("figure");
         workElement.dataset.id = article.id;
+        workElement.id = "work-element";
 
         const imageElement = document.createElement("img");
         imageElement.src = article.imageUrl
@@ -72,6 +73,4 @@ buttonHotels.addEventListener("click", function() {
     generateWorks(filteredHotels);
     console.log(filteredHotels);
 });
-
-// Partie PAGE DE CONNEXION
 
