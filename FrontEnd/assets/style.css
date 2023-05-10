@@ -222,7 +222,7 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
-
+								/* PARTIE LOGIN */
 .body-login .login-link {
 	font-weight: 700;
 }
@@ -259,6 +259,7 @@ footer nav ul {
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
+	cursor: pointer;
 	margin : 2em auto;
 	width: 180px;
 	height: 36px;
@@ -275,4 +276,247 @@ label[for="password"],
 .error-message {
 	display: none;
 	color: red;
+}
+								/* PARTIE REDIRECTION APRES CONNECTION*/
+#black-banner {
+display : none;
+justify-content : center;
+align-items : center;
+gap : 20px;
+color : white;       
+background-color : black;
+width : 100%;
+height : 59px;
+}
+
+.modify {
+	margin: 20px 0 0 57px;
+}
+.modify,
+.modify-btn {
+	display: none;
+	align-items: center;
+	font-weight: 500;
+	font-family: "Work sans";
+	font-size: 14px;
+	display: flex;
+}
+.modify a,
+.modify-btn a {
+	display: flex;
+	text-decoration: none;
+	color: black;
+	gap: 8px;
+}
+#portfolio h2 {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+}
+							/*PARTIE MODALE*/
+.modal-window {		
+	display: none;
+	position: absolute;
+	z-index: 2;
+	left: 33%;
+	top: 601px;
+	width: 40%;
+	height: 93%;
+	background-color: white;
+	border-radius : 13px;
+	padding: 30px;
+}
+
+.close {
+	color: black;
+	float: right;
+	font-size: 28px;
+	cursor: pointer;
+}
+.modal-content1 {
+	height: 70%;
+	border-bottom: #b3b3b3 solid 1px;
+	width: 430px;
+	margin: auto;
+	padding-bottom: 20px;
+}
+.modal-content1 h2 {
+	font-size: 28px;
+	font-weight: 400;
+	color: black;
+	font-family: "Work sans";
+	margin-top: 30px;
+}
+
+#image-container {
+	position: relative;
+	display: inline-block;
+}
+#works-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 40px;
+}
+#works-gallery img {
+	width: 78px;
+	height: auto;
+}
+.arrow-icon {
+	position: absolute;
+	font-size: 10px;
+    padding: 4px;
+    background-color: black;
+    color: white;
+    top: 5px;
+	left: 36px;
+}
+.trash-icon {
+	position: absolute;
+	font-size: 10px;
+    padding: 4px;
+    background-color: black;
+    color: white;
+    top: 5px;
+    right: 4px;
+	cursor: pointer;
+}
+
+.modal-content2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 18px;
+}
+
+.title-modal-2 {
+	margin-top: 30px;
+	font-size: 28px;
+	font-weight: 400;
+	color: black;
+	font-family: "Work sans";
+}
+#add-image,
+#delete-galery{
+	width: 237px;
+	height: 36px;
+	font-family: "Syne";
+	cursor: pointer;
+}
+#add-image {
+	margin-top: 40px;
+	border-radius: 20px;
+	color: white;
+	background-color:#1D6154;
+	border: none;
+	font-size: 14px;
+}
+#delete-galery {
+	border: none;
+	color: #d65353;
+	background-color: white;
+	font-weight: 400;
+	font-size: 13px;
+}
+.modal-content-3 {
+	height: 100%;
+}
+.left-arrow {
+	position: absolute;
+	top: 35px;
+	font-size: 19px;
+}
+.block-modal-2 {
+    margin: auto;
+	width: 100%;
+	max-width: 430px;
+	height: 85%;
+	border-bottom: 1px solid #b3b3b3;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	font-family: "work sans";
+}
+.add-image-block {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 169px;
+	align-items: center;
+	gap: 17px;
+	background-color: #E8F1F6;
+}
+.add-image-block img {
+	width: 50%;
+	height: 100%;
+}
+.picture-icon {
+	margin-top: 20px;
+}
+.picture-icon .picture {
+	font-size: 58px;
+	color: #B9C5CC;
+}
+.button-download {
+	border: none;
+	border-radius: 20px;
+	height: 36px;
+	width: 173px;
+	color: #306685;
+	background-color: #CBD6DC;
+	font-weight: bold;
+	font-family: "work sans";
+	font-size: 14px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#file-download {
+	position: absolute;
+	top: 270px;
+    left: 180px;
+	opacity: 0;
+}
+.add-image-block p {
+	font-size: 11px;
+	margin-top: -8px;
+}
+.input-title {
+	height: 50px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#category-select {
+	height: 50px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.block-validate-modal2 {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+}
+#validate-image-button {
+	border: none;
+	border-radius: 20px;
+	background-color: #A7A7A7;
+	color: white;
+	font-family: "Syne";
+	width: 45%;
+	height: 36px;
+}
+.alert-validate {
+	color: red;
+	position: absolute;
+	bottom: 50px;
+}
+.overlay {
+	position: fixed;
+	left:0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 1;
+	display: none;
 }
