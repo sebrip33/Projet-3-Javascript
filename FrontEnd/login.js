@@ -10,7 +10,7 @@ const modalContent1 = document.querySelector(".modal-content1");
 const modalContent2 = document.querySelector(".modal-content2");
 
 const modalContent3 = document.createElement("div");    // Création du bloc contenant les éléments de la deuxième interface de ma modale
-modalContent3.classList.add("modal-content-3");
+    modalContent3.classList.add("modal-content-3");
 
 
 form.addEventListener("submit", (e) => {        // Ajoute l'évenement submit au formulaire
@@ -38,9 +38,11 @@ form.addEventListener("submit", (e) => {        // Ajoute l'évenement submit au
     })
 });
 
-// PARTI CONNECTÉ
 
 const token = localStorage.getItem("token");
+
+
+// PARTI CONNECTÉ
 
 function loggedIn() {   
 
@@ -50,34 +52,35 @@ function loggedIn() {
     banner.style.display = "flex";
 
     const editMode = document.createElement("span");
-    editMode.innerHTML = `<i class="fa-regular fa-pen-to-square square"></i> Mode édition`;
-    banner.appendChild(editMode);
+        editMode.innerHTML = `<i class="fa-regular fa-pen-to-square square"></i> Mode édition`;
+        banner.appendChild(editMode);
     // Partie css du mode édition
-    editMode.style.fontSize = "16px";
+        editMode.style.fontSize = "16px";
 
     const buttonChange = document.createElement("button");
-    buttonChange.innerHTML = "publier les changements";
-    banner.appendChild(buttonChange);
-    // Partie css du bouton
-    buttonChange.style.borderRadius = "20px";
-    buttonChange.style.border = "none";
-    buttonChange.style.width = "215px";
-    buttonChange.style.height = "38px";
-    buttonChange.style.fontFamily = "Work sans";
-    buttonChange.style.fontWeight = "600";
+        buttonChange.innerHTML = "publier les changements";
+        banner.appendChild(buttonChange);
+        // Partie css du bouton
+        buttonChange.style.borderRadius = "20px";
+        buttonChange.style.border = "none";
+        buttonChange.style.width = "215px";
+        buttonChange.style.height = "38px";
+        buttonChange.style.fontFamily = "Work sans";
+        buttonChange.style.fontWeight = "600";
 
     modify.style.display = "flex";          // Affichage des liens "modifier"
     modifyButton.style.display = "flex";
 
     const hideFilters = document.querySelector(".filters");     // Cache les filtres
-    hideFilters.style.visibility = "hidden";
+        hideFilters.style.visibility = "hidden";
 
-    loginBtn.addEventListener("click", () => {      // Click pour déconnexion
+    loginBtn.addEventListener("click", () => {      // Clique pour déconnexion
         localStorage.removeItem("token");
         window.location.href = "index.html";
         
     });
 }
+
 
 
 if (token) {                // Si le token est présent dans le localStorage 
@@ -88,6 +91,7 @@ if (token) {                // Si le token est présent dans le localStorage
     modifyButton.style.display = "none";
 };
     
+
 
      // Initialisation de l'état de la modale
     
@@ -112,16 +116,36 @@ function closeModal() {
     resetModalContents();
 }
 
+function resetModalContents() {
+    modalContents.style.display = "block";
+}
+
+function resetModalContents2() {
+    modalContent3.style.display = "block";
+}
+
+function switchModalContents (visible) {
+    let data;
+    data = visible ? 'block' :'none';
+    modalContents.style.display = data;
+}
+    
+function closeModal2() {
+    modalContent3.style.display = "none";
+    resetModalContents();
+}
+
+
 function worksImages() {        // Fonction pour récupérer les images de l'API
     fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
         const worksGallery = document.getElementById("works-gallery");
-        worksGallery.innerHTML = "";
+            worksGallery.innerHTML = "";
         
         works.forEach((work, first) => {
             const imageContainer = document.createElement("figure");
-                imageContainer.id = "image-container";        // id="image-container"
+                imageContainer.classList.add("image-container");        // id="image-container"
             const image = document.createElement("img");
             const editImage = document.createElement("figcaption");
                 editImage.innerHTML = "éditer";                         // texte "éditer" sous l'image
@@ -157,27 +181,28 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
                 imageContainer.appendChild(arrowsIcon);
             }
 
-            const deleteAllWorksButton = document.getElementById("delete-galery");
-            deleteAllWorksButton.addEventListener("click", () => {
-                const worksList = document.getElementsByTagName("figure");
-                console.log(worksList);
-                Array.from(worksList).forEach(work => {     // Je convertis tout les éléments dans un tableau
-
-                    fetch(`http://localhost:5678/api/works/${works.id}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    })
-                    .then (response => {
-                        if (response.ok) {
-                            work.remove();
-                        } else {
-                            throw new Error ("failed to delete all images")
-                        }
-                    })
-                });
-            })   
+            const deleteAllWorksButton = document.getElementById("delete-galery");      // Je récupère le bouton "Supprimer la galerie"
+                deleteAllWorksButton.addEventListener("click", () => {
+                    const worksList = document.querySelectorAll(".gallery");        //  Je récupère le parent des éléments
+                    const worksElements = document.querySelectorAll(".work-element");       // Je récupère les travaux du DOM avec la classe "work-element"
+                    console.log(worksList);
+                    Array.from(worksElements).forEach(work => {     // Je convertis tout les éléments dans un tableau
+                        const workId = work.dataset.id;
+                        fetch(`http://localhost:5678/api/works/${workId}`, {
+                            method: "DELETE",
+                            headers: {
+                                "Authorization": `Bearer ${token}`
+                            }
+                        })
+                        .then (response => {
+                            if (response.ok) {
+                                work.remove();
+                            } else {
+                                throw new Error ("failed to delete all images")
+                            }
+                        })
+                    });
+                })   
 
             imageContainer.appendChild(image);
             imageContainer.appendChild(editImage);
@@ -243,17 +268,16 @@ function generateModal2() {
     
     fileDownload.addEventListener("change", function () {       // l'événement "change" est utilisé pour déclencher le chargement de l'image sélectionnée par l'utilisateur, en utilisant l'API FileReader pour lire le contenu du fichier sélectionné
         const reader = new FileReader();                        // j' utilise l'objet FileReader pour lire le contenu de l'image
-        
-        reader.addEventListener("load", function () {       // Événement "load" sur "fileReader" pour lire le contenu de l'image                                                          
-            imagePreview.src = reader.result;       // La source de l'élément img est définie sur la valeur de la propriété "result" de l'objet FileReader, qui contient les données de l'image en tant que URL
-            imagePreview.style.maxWidth = "100%";
-            imagePreview.style.maxHeight = "100%";
-            imagePreview.style.position = "absolute";       // AFFICHAGE DE L'IMAGE
-            imagePreview.style.top = "0";
-            addImageBlock.style.position = "relative";
-            addImageBlock.appendChild(imagePreview);
-            validateFields();       // Appel de la fonction pour changer la couleur du bouton "valider"
-        });
+            reader.addEventListener("load", function () {       // Événement "load" sur "fileReader" pour lire le contenu de l'image                                                          
+                imagePreview.src = reader.result;       // La source de l'élément img est définie sur la valeur de la propriété "result" de l'objet FileReader, qui contient les données de l'image en tant que URL
+                imagePreview.style.maxWidth = "100%";
+                imagePreview.style.maxHeight = "100%";
+                imagePreview.style.position = "absolute";       // AFFICHAGE DE L'IMAGE
+                imagePreview.style.top = "0";
+                addImageBlock.style.position = "relative";
+                addImageBlock.appendChild(imagePreview);
+                validateFields();       // Appel de la fonction pour changer la couleur du bouton "valider"
+            });
         
         reader.readAsDataURL(fileDownload.files[0]);        // Génére l'URL avec la méthode readAsDataURL qui convertit le contenu du fichier en une URL
     });
@@ -405,22 +429,3 @@ document.addEventListener("keydown", (e) => {       // Fermeture de la modale en
         resetModalContents();
     }
 });
-
-function resetModalContents() {
-    modalContents.style.display = "block";
-}
-
-function resetModalContents2() {
-    modalContent3.style.display = "block";
-}
-
-function switchModalContents (visible) {
-    let data;
-    data = visible ? 'block' :'none';
-    modalContents.style.display = data;
-    }
-    
-function closeModal2() {
-    modalContent3.style.display = "none";
-    resetModalContents();
-}
