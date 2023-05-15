@@ -145,32 +145,16 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
         
         works.forEach((work, first) => {
             const imageContainer = document.createElement("figure");
-                imageContainer.classList.add("image-container");        // id="image-container"
+                imageContainer.classList.add("image-container");        // class="image-container"
+                imageContainer.dataset.workId = work.id;
             const image = document.createElement("img");
             const editImage = document.createElement("figcaption");
                 editImage.innerHTML = "éditer";                         // texte "éditer" sous l'image
             const trashIcon = document.createElement("span");
                 trashIcon.classList.add("trash-icon");                  // class="trash-icon"
-                trashIcon.innerHTML = '<i class="fa-solid fa-trash-can"></i>';      // icone "poubelle"
-                trashIcon.addEventListener("click", function(e) {
-                    removeWork();
-                    removeModalWork();
-                    e.preventDefault();
-                    fetch(`http://localhost:5678/api/works/${work.id}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Accept" : "application/json",
-                            "Authorization": `Bearer ${token}`
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log("Work deleted");
-                        } else {
-                            throw new Error("failed to delete work")
-                        }
-                    });
-                });  
+                trashIcon.innerHTML = '<i class="fa-solid fa-trash-can"></i>';      // icone "poubelle"      
+
+                deleteOneModalWork(work, trashIcon, imageContainer);
             
                 image.src = work.imageUrl;              // Récupération des images uniquement
             
@@ -197,6 +181,7 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
                         .then (response => {
                             if (response.ok) {
                                 work.remove();
+                                worksGallery.remove();
                             } else {
                                 throw new Error ("failed to delete all images")
                             }
@@ -212,18 +197,42 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
     });
 }
 
-// Fonction de suppression des travaux du DOM : Galerie de la modale
-function removeModalWork() {
-    const modalFigureRemoved = document.getElementById("image-container");
-    console.log(`Contenu de image-container avant sa suppression : ${modalFigureRemoved}`);
-    modalFigureRemoved.remove();
-};
 
-// Fonction de suppression des travaux du DOM : Galerie de la page principale
-function removeWork() {
-    const figureRemove = document.getElementById("work-element");
-    console.log(`Contenu de work-element avant sa suppression : ${figureRemove}`);
-    figureRemove.remove();
+function deleteOneModalWork(work, trashIcon, imageContainer) {
+    if (trashIcon) {
+        imageContainer.addEventListener("click", function(e) {
+            e.preventDefault();
+            fetch(`http://localhost:5678/api/works/${work.id}`, {
+                method: "DELETE",
+                headers: {
+                    "Accept" : "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    removeModalAndDomElement(e, work.id);
+                    console.log("Work deleted");
+                } else {
+                    throw new Error("failed to delete work")
+                }
+            });
+        });
+    }
+}
+
+// Fonction de suppression des travaux du DOM : Galerie de la modale
+function removeModalAndDomElement(e, workId) {  
+    const modalFigureRemoved = e.target.closest(".image-container");
+        modalFigureRemoved.remove();
+        
+    const domElementRemoved = document.querySelector(`.work-element[data-id="${workId}"]`);
+        if (domElementRemoved) {
+            domElementRemoved.remove();
+            console.log("Work deleted from the DOM");
+        } else {
+            console.log("failed to delete from the DOM");
+        }
 };
 
 function generateModal2() {
@@ -275,6 +284,8 @@ function generateModal2() {
                 imagePreview.style.position = "absolute";       // AFFICHAGE DE L'IMAGE
                 imagePreview.style.top = "0";
                 addImageBlock.style.position = "relative";
+                fileDownload.style.display = "none";
+                buttonDownload.style.display = "none";
                 addImageBlock.appendChild(imagePreview);
                 validateFields();       // Appel de la fonction pour changer la couleur du bouton "valider"
             });
@@ -345,6 +356,7 @@ function generateModal2() {
     categorySelect.addEventListener("change", validateFields);
 
     validateImageButton.addEventListener("click", async function(e) {
+        e.preventDefault();
         click = true;
         const selectedImage = fileDownload.files[0];
         const selectedTitle = inputTitle.value;
@@ -370,8 +382,21 @@ function generateModal2() {
             });
             if (response.ok) {
                 console.log('Image added to the database');
+                e.preventDefault();
                 closeModal2();
                 resetModalContents();
+                openModal();
+
+                const newElement = document.createElement("figure");
+                newElement.classList.add("work-element");
+                newElement.innerHTML = `
+                <img src="${imagePreview.src}"/>
+                <figcaption>${selectedTitle}</figcaption>
+                `;
+
+                const gallery = document.querySelector('.gallery');
+                gallery.appendChild(newElement);
+
             } else {
                 console.log('Error adding image to the database');
             }
