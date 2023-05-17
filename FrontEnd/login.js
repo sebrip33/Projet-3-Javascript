@@ -106,8 +106,8 @@ function openModal() {
     switchModalContents(true);
     const modal = document.querySelector(".modal-window");
     const overlay = document.querySelector(".overlay");
-    modal.style.display = "block";      // Au clique, fait apparaître la modale
-    overlay.style.display = "block";    // Au clique, fait apparaître la superposition avec opacité
+    modal.style.display = "block";      // Fait apparaître la modale
+    overlay.style.display = "block";    // Fait apparaître la superposition avec opacité
     worksImages();     
 }
 
@@ -116,7 +116,7 @@ modifyButton.addEventListener("click", () => {
     openModal();
 });
 
-
+// Fermeture totale de la modale
 function closeModal() {
     const modal = document.querySelector(".modal-window");
     const overlay = document.querySelector(".overlay");
@@ -125,10 +125,12 @@ function closeModal() {
     resetModalContents();
 }
 
+// Réinitialise le contenu de la modale 1
 function resetModalContents() {
     modalContents.style.display = "block";
 }
 
+// Réinitialise le contenu de la modale 2
 function resetModalContents2() {
     inputTitle.value = "";
     categorySelect.value = "";
@@ -138,19 +140,21 @@ function resetModalContents2() {
     buttonDownload.style.display = "flex";
 }
 
+// Fonction pour basculer l'affichage des contenus de la modale 1
 function switchModalContents (visible) {
     let data;
     data = visible ? 'block' :'none';
     modalContents.style.display = data;
 }
-    
+
+// Ferme la modal 2 et réinitialise son contenu
 function closeModal2() {
     modalContent3.style.display = "none";
     resetModalContents();
 }
 
-
-function worksImages() {        // Fonction pour récupérer les images de l'API
+// Fonction pour récupérer les images de l'API
+function worksImages() {        
     fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
@@ -181,6 +185,7 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
 
             const deleteAllWorksButton = document.getElementById("delete-galery");      // Je récupère le bouton "Supprimer la galerie"
                 deleteAllWorksButton.addEventListener("click", () => {
+                    
                     const worksList = document.querySelectorAll(".gallery");        //  Je récupère le parent des éléments
                     const worksElements = document.querySelectorAll(".work-element");       // Je récupère les travaux du DOM avec la classe "work-element"
                     console.log(worksList);
@@ -199,9 +204,9 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
                             } else {
                                 throw new Error ("failed to delete all images")
                             }
-                        })
-                    });
-                })   
+                        });
+                    });        
+                });   
 
             imageContainer.appendChild(image);
             imageContainer.appendChild(editImage);
@@ -211,7 +216,7 @@ function worksImages() {        // Fonction pour récupérer les images de l'API
     });
 }
 
-        // Fonction de suppression dynamique d'un élément
+// Fonction de suppression dynamique d'un élément
 function deleteOneModalWork(work, trashIcon, imageContainer) {
     if (trashIcon) {
         imageContainer.addEventListener("click", function(e) {
@@ -250,7 +255,8 @@ function removeModalAndDomElement(e, workId) {
 };
 
 
-const addImage = document.getElementById("add-image");      // Bouton "Ajouter une photo"
+// Bouton "Ajouter une photo"
+const addImage = document.getElementById("add-image");      
     addImage.addEventListener("click", () => {
         switchModalContents(false);
         generateModal2();
@@ -278,6 +284,7 @@ const alertValidate = document.createElement("p");
 const validateImageButton = document.createElement("button");       //  Bouton "valider"
 
 
+// Générer la modale 2
 function generateModal2() {
     
     modalContent3.innerHTML = "";
@@ -302,13 +309,13 @@ function generateModal2() {
         buttonDownload.classList.add("button-download");
         buttonDownload.innerHTML = "+ Ajouter photo";
         buttonDownload.addEventListener("click", function () {
-            fileDownload.click();               // Le clique déclenche l'input en dessous
+            fileDownload.click();                           // Le clique déclenche l'input
         });
 
         fileDownload.id = "file-download";
-        fileDownload.type = "file";     //  Cet élément permet de sélectionner un fichier image sur l'ordinateur
+        fileDownload.type = "file";                         // Cet élément permet de sélectionner un fichier image sur l'ordinateur
         fileDownload.accept = "image/jpeg, image-png";      // Types de fichier acceptés
-        fileDownload.maxSize = 4 * 1024 * 1024;        // 4 Mo max
+        fileDownload.maxSize = 4 * 1024 * 1024;             // 4 Mo max
 
         downloadText.innerHTML = "jpg, png: 4mo max";
 
@@ -348,7 +355,8 @@ function generateModal2() {
 
     let click = false;
 
-    // Écouteurs dévénements pour détecter les changements dans les valeurs des champs et appelle la fonction "validate fields"
+    /* Écouteurs dévénements pour détecter les changements dans les 
+    valeurs des champs et appelle la fonction "validate fields"*/
     inputTitle.addEventListener("input", validateFields);
     fileDownload.addEventListener("input", validateFields);
     categorySelect.addEventListener("change", validateFields);
@@ -376,11 +384,12 @@ function generateModal2() {
     blockValidateModal2.appendChild(validateImageButton);
 };
 
+// Traitement de l'image chargé depuis l'ordinateur
 function handleFileDownloadChange() {
     fileDownload.addEventListener("change", function () {       // l'événement "change" est utilisé pour déclencher le chargement de l'image sélectionnée par l'utilisateur, en utilisant l'API FileReader pour lire le contenu du fichier sélectionné
         const reader = new FileReader();                        // j' utilise l'objet FileReader pour lire le contenu de l'image
             reader.addEventListener("load", function () {       // Événement "load" sur "fileReader" pour lire le contenu de l'image                                                          
-                imagePreview.src = reader.result;       // La source de l'élément img est définie sur la valeur de la propriété "result" de l'objet FileReader, qui contient les données de l'image en tant que URL
+                imagePreview.src = reader.result;               // La source de l'élément img est définie sur la valeur de la propriété "result" de l'objet FileReader, qui contient les données de l'image en tant que URL
                 imagePreview.style.maxWidth = "100%";
                 imagePreview.style.maxHeight = "100%";
                 imagePreview.style.position = "absolute";       // AFFICHAGE DE L'IMAGE
@@ -389,13 +398,14 @@ function handleFileDownloadChange() {
                 fileDownload.style.display = "none";
                 buttonDownload.style.display = "none";
                 addImageBlock.appendChild(imagePreview);
-                validateFields();       // Appel de la fonction pour changer la couleur du bouton "valider"
+                validateFields();                               // Appel de la fonction pour changer la couleur du bouton "valider"
             });
         
-        reader.readAsDataURL(fileDownload.files[0]);        // Génère l'URL avec la méthode readAsDataURL qui convertit le contenu du fichier en une URL
+        reader.readAsDataURL(fileDownload.files[0]);            // Génère l'URL avec la méthode readAsDataURL qui convertit le contenu du fichier en une URL
     });
 }
 
+// Fonction pour changer la couleur du bouton "valider"
 function validateFields() {
     const selectedImage = fileDownload.files[0];
     const selectedTitle = inputTitle.value;
@@ -408,6 +418,7 @@ function validateFields() {
     }
 };
 
+// Traitement du bouton de validation d'ajout d'un élément
 function handleValidateImageButtonClick() {
     validateImageButton.addEventListener("click", async function(e) {
         e.preventDefault();
@@ -434,6 +445,7 @@ function handleValidateImageButtonClick() {
                     },
                     body: formData
                 });
+                
                 if (response.ok) {
                     console.log('Image added to the database');
                     e.preventDefault();
@@ -461,21 +473,24 @@ function handleValidateImageButtonClick() {
     });
 }
 
+// Fermeture de la modale par la croix
 const closeButton  = document.querySelector(".close");
-    closeButton.addEventListener("click", () => {       // Fermeture de la modale par la croix
-        closeModal();
-        closeModal2();
-        resetModalContents();
-    });
-    
-const overlay = document.querySelector(".overlay");
-    overlay.addEventListener("click", () => {       // Fermeture de la modale par le clique en dehors
+    closeButton.addEventListener("click", () => {       
         closeModal();
         closeModal2();
         resetModalContents();
     });
 
-document.addEventListener("keydown", (e) => {       // Fermeture de la modale en appuyant sur echap
+// Fermeture de la modale par le clic en dehors
+const overlay = document.querySelector(".overlay");
+    overlay.addEventListener("click", () => {       
+        closeModal();
+        closeModal2();
+        resetModalContents();
+    });
+
+// Fermeture de la modale en appuyant sur echap
+document.addEventListener("keydown", (e) => {       
     if (e.key === "Escape") {
         closeModal();
         closeModal2();
